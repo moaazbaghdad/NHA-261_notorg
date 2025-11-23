@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using STOCKUPMVC.Data.Repositories;
 using STOCKUPMVC.Models;
-using STOCKUPMVC.Models.ViewModels;
+using STOCKUPMVC.ViewModels;
 
 namespace STOCKUPMVC.Controllers
 {

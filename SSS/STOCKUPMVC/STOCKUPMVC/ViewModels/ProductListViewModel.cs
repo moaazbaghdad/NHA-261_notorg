@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using STOCKUPMVC.Models;
 
-namespace STOCKUPMVC.Models.ViewModels
+namespace STOCKUPMVC.ViewModels
 {
     public class ProductListViewModel
     {

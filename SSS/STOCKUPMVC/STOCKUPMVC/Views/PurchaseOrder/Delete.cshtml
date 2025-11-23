@@ -1,0 +1,18 @@
+﻿@model STOCKUPMVC.Models.PurchaseOrder
+@{
+    ViewData["Title"] = "Delete Purchase Order";
+}
+
+<h2>Delete Purchase Order #@Model.POID</h2>
+
+<div>
+    <p>Are you sure you want to cancel this purchase order?</p>
+    <p><strong>Supplier:</strong> @Model.Supplier?.Name</p>
+    <p><strong>Status:</strong> @Model.Status</p>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="POID" />
+    <button type="submit" class="btn btn-danger">Cancel Order</button>
+    <a class="btn btn-secondary" asp-action="List">Back</a>
+</form>
