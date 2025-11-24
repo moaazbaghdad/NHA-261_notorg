@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using STOCKUPMVC.Data.Repositories;
 using STOCKUPMVC.Models;
+using STOCKUPMVC.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,13 +28,27 @@ namespace STOCKUPMVC.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 var roles = await _userManager.GetRolesAsync(user);
 
-                // Admin/Staff users go to AdminView
                 if (roles.Contains("Admin") || roles.Contains("Staff"))
-                    return View("AdminView");
+                {
+                    var vm = new DashboardViewModel
+                    {
+                        ProductCount = await _unitOfWork.Products.CountAsync(),
+                        WarehouseCount = await _unitOfWork.Warehouses.CountAsync(),
+                        PendingSalesOrderCount = await _unitOfWork.SalesOrders.CountAsync(s => s.Status == "Pending"),
+
+                        RecentSalesOrders = _unitOfWork.SalesOrders
+                            .GetAllQueryable()
+                            .OrderByDescending(s => s.OrderDate)
+                            .Take(5)
+                            .ToList()
+                    };
+
+                    return View("AdminView", vm);
+                }
             }
 
-            // All others (public or viewer) see UserView
             return View("UserView");
         }
+
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace STOCKUPMVC.ViewModels
 {
-    public class PurchaseOrderItemVMM
+    public class PurchaseOrderItemViewModel
     {
         public int CategoryID { get; set; }
         public int ProductID { get; set; }
@@ -15,17 +15,20 @@ namespace STOCKUPMVC.ViewModels
         public decimal TotalPrice => Quantity * UnitPrice;
     }
 
-    public class PurchaseOrderCreateVMM
+    public class PurchaseOrderEditViewModel
     {
         [Required]
         public int SupplierID { get; set; }
+        public int POID { get; set; }
+        [Required]
+        public string Status { get; set; }
 
         [Required]
         public int WarehouseID { get; set; }
 
         //public DateTime OrderTime { get; set; } = DateTime.Now;
 
-        public List<PurchaseOrderItemVMM> OrderItems { get; set; } = new();
+        public List<PurchaseOrderItemViewModel> OrderItems { get; set; } = new();
 
         public decimal TotalAmount
         {

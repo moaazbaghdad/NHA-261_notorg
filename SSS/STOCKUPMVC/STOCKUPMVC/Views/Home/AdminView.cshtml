@@ -1,60 +1,51 @@
-﻿@{
+﻿@model STOCKUPMVC.ViewModels.DashboardViewModel
+
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Dashboard";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<!-- Dashboard Cards -->
+<!-- Dashboard Metric Cards -->
 <div class="row g-4 mb-4">
 
-    <div class="col-md-3">
-        <div class="card dashboard-card shadow-sm p-3 h-100">
+    <!-- Products Count -->
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3 h-100">
             <div class="text-center">
                 <div class="fs-1 mb-2">📦</div>
-                <h5>Products</h5>
-                <p class="text-muted">Manage warehouse items</p>
+                <h5>Total Products</h5>
+                <h2 class="fw-bold">@Model.ProductCount</h2>
             </div>
-            <a asp-controller="Products" asp-action="Index" class="btn btn-primary w-100 mt-auto">Go</a>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card dashboard-card shadow-sm p-3 h-100">
+    <!-- Warehouses Count -->
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3 h-100">
             <div class="text-center">
-                <div class="fs-1 mb-2">📥</div>
-                <h5>Stock Movements</h5>
-                <p class="text-muted">Track stock in/out</p>
+                <div class="fs-1 mb-2">🏭</div>
+                <h5>Total Warehouses</h5>
+                <h2 class="fw-bold">@Model.WarehouseCount</h2>
             </div>
-            <a asp-controller="StockMovement" asp-action="List" class="btn btn-success w-100 mt-auto">Go</a>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card dashboard-card shadow-sm p-3 h-100">
+    <!-- Pending Sales Orders -->
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3 h-100">
             <div class="text-center">
-                <div class="fs-1 mb-2">🛒</div>
-                <h5>Sales Orders</h5>
-                <p class="text-muted">Customer orders</p>
+                <div class="fs-1 mb-2">🕒</div>
+                <h5>Pending Sales Orders</h5>
+                <h2 class="fw-bold text-warning">@Model.PendingSalesOrderCount</h2>
             </div>
-            <a asp-controller="SalesOrder" asp-action="List" class="btn btn-warning w-100 mt-auto">Go</a>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="card dashboard-card shadow-sm p-3 h-100">
-            <div class="text-center">
-                <div class="fs-1 mb-2">📑</div>
-                <h5>Purchase Orders</h5>
-                <p class="text-muted">Supplier orders</p>
-            </div>
-            <a asp-controller="PurchaseOrder" asp-action="List" class="btn btn-danger w-100 mt-auto">Go</a>
         </div>
     </div>
 
 </div>
 
-<!-- Recent Orders -->
+<!-- Recent Sales Orders Table -->
 <div class="card shadow-sm border-0">
     <div class="card-header bg-white">
         <h5 class="fw-bold mb-0">Recent Sales Orders</h5>
@@ -72,20 +63,29 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>101</td>
-                    <td>John Doe</td>
-                    <td>2025-11-17</td>
-                    <td><span class="badge bg-warning">Pending</span></td>
-                    <td>$250</td>
-                </tr>
-                <tr>
-                    <td>102</td>
-                    <td>Jane Smith</td>
-                    <td>2025-11-16</td>
-                    <td><span class="badge bg-success">Completed</span></td>
-                    <td>$480</td>
-                </tr>
+                @foreach (var order in Model.RecentSalesOrders)
+                {
+                    <tr>
+                        <td>@order.OrderID</td>
+                        <td>@order.Customer?.Name</td>
+                        <td>@order.OrderDate.ToShortDateString()</td>
+                        <td>
+                            @if (order.Status == "Pending")
+                            {
+                                <span class="badge bg-warning">Pending</span>
+                            }
+                            else if (order.Status == "Completed")
+                            {
+                                <span class="badge bg-success">Completed</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@order.Status</span>
+                            }
+                        </td>
+                        <td>@order.TotalAmount</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -93,8 +93,12 @@
 
 @section Styles {
     <style>
-        .dashboard-card {
+        .card {
             border-radius: 10px;
+        }
+
+        .fs-1 {
+            font-size: 3rem !important;
         }
     </style>
 }

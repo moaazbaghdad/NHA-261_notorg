@@ -34,11 +34,11 @@ namespace STOCKUPMVC.Data
                 .HasKey(sp => new { sp.SupplierID, sp.ProductID });
 
             // StockMovement creator
-            builder.Entity<StockMovement>()
-                .HasOne(m => m.CreatedBy)
-                .WithMany(u => u.CreatedStockMovements)
-                .HasForeignKey(m => m.CreatedById)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<StockMovement>()
+            //    .HasOne(m => m.CreatedBy)
+            //    .WithMany(u => u.CreatedStockMovements)
+            //    .HasForeignKey(m => m.CreatedById)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             // Optional self references
             builder.Entity<StockMovement>()
