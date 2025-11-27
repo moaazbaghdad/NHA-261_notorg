@@ -1,0 +1,170 @@
+﻿@model STOCKUPMVC.Models.ViewModels.ProductListViewModel
+
+<style>
+    /* Container title styling */
+    .section-title {
+        font-weight: 700;
+        font-size: 2.2rem;
+        color: #222;
+    }
+
+    /* Product Card */
+    .pro-card {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #fff;
+        transition: all 0.25s ease-in-out;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+        .pro-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        }
+
+    /* Product Image */
+    .pro-img-box {
+        height: 220px;
+        overflow: hidden;
+    }
+
+        .pro-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+    .pro-card:hover .pro-img-box img {
+        transform: scale(1.06);
+    }
+
+    /* Product Title */
+    .pro-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    /* Price Tag */
+    .pro-price {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #D97706; /* Matches your Home buttons (amber / golden) */
+    }
+
+    /* Buttons */
+    .btn-view {
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 6px 12px;
+    }
+
+    .btn-cart {
+        background: #F59E0B;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 10px;
+        padding: 6px 12px;
+    }
+
+        .btn-cart:hover {
+            background: #d97706;
+            color: white;
+        }
+
+    /* Pagination */
+    .pagination .page-item .page-link {
+        border-radius: 8px;
+        font-weight: 600;
+        margin: 0 3px;
+    }
+</style>
+
+
+<div class="container my-5">
+
+    <h2 class="text-center mb-5 section-title">Available Products</h2>
+
+    <!-- Search & Filter -->
+    <form id="filterForm" class="row g-3 mb-4 justify-content-center">
+        <div class="col-md-5">
+            <input type="text" name="SearchString" value="@Model.SearchString"
+                   class="form-control form-control-lg"
+                   placeholder="Search for a product..." />
+        </div>
+
+        <div class="col-md-3">
+            <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select form-select-lg">
+                <option value="">All Categories</option>
+            </select>
+        </div>
+
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-warning btn-lg fw-bold">Filter</button>
+        </div>
+    </form>
+
+    <!-- Product Cards -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col">
+                <div class="pro-card">
+                    <div class="pro-img-box">
+                        <img src="@(product.ImageUrl ?? "/images/placeholder.png")" alt="@product.Name" />
+                    </div>
+
+                    <div class="p-4 d-flex flex-column">
+
+                        <h5 class="pro-title">@product.Name</h5>
+
+                        <p class="text-muted small">
+                            @(product.Description != null && product.Description.Length > 50
+                                                    ? product.Description.Substring(0, 50) + "..."
+                                                    : product.Description)
+                    </p>
+
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="pro-price">$@product.Price</span>
+
+                            <div class="d-flex gap-2">
+                                <a asp-controller="Products" asp-action="Details"
+                                   asp-route-id="@product.ProductID"
+                                   class="btn btn-outline-primary btn-view">
+                                    View
+                                </a>
+
+                                <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                                    <input type="hidden" name="productId" value="@product.ProductID" />
+                                    <input type="hidden" name="quantity" value="1" />
+                                    <button type="submit" class="btn-cart">
+                                        Add
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+                }
+    </div>
+
+    <!-- Pagination -->
+    @if (Model.TotalPages > 1)
+    {
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link"
+                           href="?CategoryId=@Model.CategoryId&SearchString=@Model.SearchString&page=@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

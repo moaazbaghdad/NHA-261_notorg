@@ -42,7 +42,7 @@ namespace STOCKUPMVC.Controllers
 
             // All others (public or viewer) see UserView with PRODUCT LIST
             var productVm = await GetProductListViewModel(null, null, 1);
-            return View("UserView", productVm);
+            return View("Home", productVm);
         }
 
         [Authorize(Roles = "Admin,Staff")]
@@ -88,10 +88,10 @@ namespace STOCKUPMVC.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> UserView(string searchString, int? categoryId, int page = 1)
+        public async Task<IActionResult> _UserProducts(string searchString, int? categoryId, int page = 1)
         {
             var vm = await GetProductListViewModel(searchString, categoryId, page);
-            return View(vm);
+            return PartialView(vm);
         }
 
         public IActionResult Privacy()

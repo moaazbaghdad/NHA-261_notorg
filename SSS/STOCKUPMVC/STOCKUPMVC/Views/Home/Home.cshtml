@@ -1,55 +1,161 @@
-﻿@{
+﻿@model STOCKUPMVC.Models.ViewModels.ProductListViewModel
+@{
     ViewData["Title"] = "Welcome to StockUp MVC";
 }
 
-<div class="hero-section text-center text-light d-flex align-items-center justify-content-center"
-     style="height:90vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('/images/warehouse-bg.jpg') center/cover no-repeat;">
-    <div>
-        <h1 class="display-3 fw-bold mb-3">STOCKUP MVC</h1>
-        <p class="lead mb-4">Smart Warehouse & Inventory Management System</p>
-        <a asp-controller="Products" asp-action="Index" class="btn btn-lg btn-warning fw-bold me-3">View Products</a>
-        <a asp-controller="Account" asp-action="Login" class="btn btn-lg btn-outline-light">Login</a>
+<style>
+    /* ---- Global Premium Styling ---- */
 
+    .hero-section {
+        height: 90vh;
+        background: linear-gradient(140deg, rgba(0,0,0,0.4), rgba(0,0,0,0.75)), url('/images/warehouse-bg.jpg') center/cover no-repeat;
+        backdrop-filter: blur(5px);
+    }
+
+    .hero-content {
+        animation: fadeInUp 1.2s ease-out;
+    }
+
+    @@keyframes fadeInUp {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    /* Cards */
+    .feature-card {
+        transition: 0.3s ease-in-out;
+        border-radius: 18px !important;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2) !important;
+        }
+
+    /* Section titles */
+    .section-title {
+        font-weight: 800;
+        font-size: 2.3rem;
+    }
+
+    /* Product Section */
+    .product-section {
+        background: #f8f9fb;
+        padding: 80px 0;
+    }
+
+    .product-card {
+        transition: 0.25s ease-in-out;
+        border-radius: 14px;
+    }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+
+    /* Buttons */
+    .btn-main {
+        padding: 14px 32px;
+        font-weight: 600;
+        border-radius: 50px;
+        font-size: 1.1rem;
+    }
+
+    .btn-outline-light:hover {
+        background-color: rgba(255,255,255,0.15);
+    }
+
+</style>
+
+<!-- HERO SECTION -->
+<div class="hero-section d-flex align-items-center justify-content-center text-light">
+    <div class="text-center hero-content">
+        <h1 class="display-2 fw-bold mb-4">STOCKUP MVC</h1>
+        <p class="fs-4 mb-5 opacity-75">Smart Warehouse & Inventory Management System</p>
+
+        <a asp-controller="Products" asp-action="Index"
+           class="btn btn-warning btn-main me-3 shadow">Browse Products</a>
+
+        <a asp-controller="Account" asp-action="Login"
+           class="btn btn-outline-light btn-main">Login</a>
     </div>
 </div>
 
-<section class="container my-5">
+<!-- WHY CHOOSE US -->
+<section class="container my-5 py-5">
     <div class="text-center mb-5">
-        <h2 class="fw-bold">Why Choose StockUp?</h2>
-        <p class="text-muted">Manage inventory, orders, and warehouses efficiently with a single, integrated platform.</p>
+        <h2 class="section-title">Why Choose StockUp?</h2>
+        <p class="text-muted fs-5">A modern way to streamline inventory, warehouses, and orders.</p>
     </div>
 
-    <div class="row text-center">
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-sm p-4">
-                <i class="bi bi-box-seam display-4 text-warning mb-3"></i>
-                <h5>Inventory Tracking</h5>
-                <p>Monitor product movement and stock levels in real time with visual analytics.</p>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card feature-card border-0 shadow-sm p-4 text-center">
+                <i class="bi bi-box-seam display-4 text-warning"></i>
+                <h4 class="mb-2 mt-3 fw-bold">Inventory Tracking</h4>
+                <p class="text-muted">Track product movement and maintain accurate stock effortlessly.</p>
             </div>
         </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-sm p-4">
-                <i class="bi bi-building-gear display-4 text-warning mb-3"></i>
-                <h5>Warehouse Management</h5>
-                <p>Optimize warehouse space and streamline supply chain operations.</p>
+        <div class="col-md-4">
+            <div class="card feature-card border-0 shadow-sm p-4 text-center">
+                <i class="bi bi-building-gear display-4 text-warning"></i>
+                <h4 class="mb-2 mt-3 fw-bold">Warehouse Control</h4>
+                <p class="text-muted">Organize warehouse layout, locations, and logistics with ease.</p>
             </div>
         </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-sm p-4">
-                <i class="bi bi-bar-chart-line display-4 text-warning mb-3"></i>
-                <h5>Reporting & Insights</h5>
-                <p>Generate detailed sales, purchase, and stock reports instantly.</p>
+        <div class="col-md-4">
+            <div class="card feature-card border-0 shadow-sm p-4 text-center">
+                <i class="bi bi-graph-up display-4 text-warning"></i>
+                <h4 class="mb-2 mt-3 fw-bold">Analytics & Insights</h4>
+                <p class="text-muted">Make better decisions with real-time analytics dashboards.</p>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="bg-dark text-light py-5">
+    <div class="container text-center py-4">
+        <h3 class="fw-bold mb-3 fs-2">Ready to take control of your warehouse?</h3>
+        <p class="mb-4 opacity-75 fs-5">Join thousands of businesses improving operations with StockUp.</p>
+        <a asp-controller="Account" asp-action="Register" class="btn btn-warning btn-lg px-5 py-3 fw-bold shadow">
+            Get Started Now
+        </a>
     </div>
 </section>
 
-<section class="bg-light py-5">
-    <div class="container text-center">
-        <h3 class="fw-bold mb-3">Ready to streamline your warehouse?</h3>
-        <p class="mb-4">Get started with StockUp MVC today and take control of your inventory.</p>
-        <a asp-controller="Account" asp-action="Register" class="btn btn-warning btn-lg">Get Started</a>
+<!-- PRODUCT LIST (PARTIAL) -->
+<section class="product-section">
+    <div class="container" id="productsContainer">
+        @await Html.PartialAsync("_UserProducts", Model)
     </div>
 </section>
+
+<script>
+    $("#filterForm").on("submit", function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "/Home/_UserProducts",
+            type: "GET",
+            data: $(this).serialize(),
+            success: function (result) {
+                $("#productsContainer").html(result);
+            }
+        });
+    });
+</script>
+
